@@ -6,7 +6,7 @@ const connection = mysql.createConnection({
     port: 3306,
     user: 'root',
     password: 'password',
-    database: 'employee_trackerDB'
+    database: 'employee_tracker_db'
 });
 
 connection.connect(err => {
@@ -14,6 +14,7 @@ connection.connect(err => {
     console.log(`connected with id ${connection.threadId}`);
     createSearch();
 });
+
 
 function createSearch() {
     inquirer.prompt({
@@ -37,7 +38,7 @@ function createSearch() {
         else {
             connection.end();
         }
-    })
+    });
 }
 
 
@@ -59,7 +60,7 @@ function addDepartment() {
                 createSearch();
             }
         )
-    })
+    });
 }
 
 function addRole() {
@@ -92,7 +93,7 @@ function addRole() {
                 createSearch();
             }
         )
-    })
+    });
 }
 
 function addEmployee() {
@@ -131,5 +132,53 @@ function addEmployee() {
                 createSearch();
             }
         )
-    })
+    });
+}
+
+function viewData(){
+    inquirer.prompt(
+        {
+            type:'list',
+            name: 'table',
+            message: 'Which table would you like to view? ',
+            choices: ['Department','Role','Employee']
+        }).then(function(answer){
+            if(answer.table === 'Department'){
+                viewDepartment();
+            }
+            else if (answer.table === 'Role'){
+                viewRole();
+            }
+            else if (answer.table === 'Employee'){
+                viewEmployee();
+            }
+            else{
+                connection.end();
+            }
+        });
+}
+
+
+function viewDepartment(){
+    connection.query ('SELECT * FROM department', function(err,res){
+        if (err) throw err;
+        console.table(res);
+        createSearch();
+    });
+}
+
+function viewRole(){
+    connection.query('SELECT * FROM role', function(err,res){
+        if (err)throw err;
+        console.table(res);
+        createSearch();
+    });
+}
+
+function viewEmployee(){
+    connection.query('SELECT * FROM employee', function(err,res){
+        if (err) throw err;
+        console.table(res);
+        createSearch();
+    });
 }
