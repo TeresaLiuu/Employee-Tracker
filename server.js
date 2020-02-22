@@ -1,6 +1,7 @@
 const mysql = require('mysql');
 const inquirer = require('inquirer');
 
+
 const connection = mysql.createConnection({
     host: 'localhost',
     port: 3306,
@@ -20,7 +21,7 @@ function createSearch() {
     inquirer.prompt({
         type: 'list',
         name: 'create',
-        message: 'Create a Department, Role, Employee, or View the following',
+        message: 'Would you like to create a Department, Role, Employee, or View the following',
         choices: ['Department', 'Role', 'Employee', 'View']
     }).then(function (promptOptions) {
         if (promptOptions.create === 'Department') {
